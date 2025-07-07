@@ -15,58 +15,95 @@
 <body>
   <h1>Formulário de Compatibilidade Amorosa</h1>
   <form id="formulario">
-    <div class="pergunta">
-      <label>O que deve prevalecer em um relacionamento duradouro?</label><br>
-      <label><input type="radio" name="q1" value="A" required /> A) Lealdade incondicional</label><br>
-      <label><input type="radio" name="q1" value="B" /> B) Liberdade individual</label>
-    </div>
-    <div class="pergunta">
-      <label>Você acredita que os fins justificam os meios?</label><br>
-      <label><input type="radio" name="q2" value="A" required /> A) Sim, em algumas situações extremas</label><br>
-      <label><input type="radio" name="q2" value="B" /> B) Não, os meios importam tanto quanto os fins</label>
-    </div>
-    <div class="pergunta">
-      <label>É mais importante proteger os sentimentos ou ser honesto a qualquer custo?</label><br>
-      <label><input type="radio" name="q3" value="A" required /> A) Proteger os sentimentos</label><br>
-      <label><input type="radio" name="q3" value="B" /> B) Ser honesto, mesmo que doa</label>
-    </div>
-    <div class="pergunta">
-      <label>Você se considera mais orientado por princípios ou por empatia?</label><br>
-      <label><input type="radio" name="q4" value="A" required /> A) Princípios</label><br>
-      <label><input type="radio" name="q4" value="B" /> B) Empatia</label>
-    </div>
-    <div class="pergunta">
-      <label>Em situações de conflito, você tende a:</label><br>
-      <label><input type="radio" name="q5" value="A" required /> A) Buscar reconciliação, mesmo que tenha que ceder</label><br>
-      <label><input type="radio" name="q5" value="B" /> B) Defender seu ponto, mesmo que isso desgaste a relação</label>
-    </div>
-    <!-- Continue o restante das perguntas seguindo este mesmo padrão -->
+    <div id="perguntas"></div>
     <button type="submit">Enviar</button>
   </form>
   <div class="resultado" id="resultado"></div>
+
   <script>
+    const perguntas = [
+      // Valores Pessoais
+      ["O que deve prevalecer em um relacionamento duradouro?", "A", "Lealdade incondicional", "Liberdade individual"],
+      ["Você acredita que os fins justificam os meios?", "B", "Sim, em algumas situações extremas", "Não, os meios importam tanto quanto os fins"],
+      ["É mais importante proteger os sentimentos ou ser honesto a qualquer custo?", "B", "Proteger os sentimentos", "Ser honesto, mesmo que doa"],
+      ["Você se considera mais orientado por princípios ou por empatia?", "A", "Princípios", "Empatia"],
+      ["Em situações de conflito, você tende a:", "A", "Buscar reconciliação, mesmo que tenha que ceder", "Defender seu ponto, mesmo que isso desgaste a relação"],
+
+      // Estilo de Vida
+      ["Seu ritmo natural é mais alinhado com:", "A", "Rotinas organizadas e previsíveis", "Estímulos variados e dias imprevisíveis"],
+      ["Você prefere momentos de lazer que envolvam:", "A", "Ambientes íntimos e silenciosos", "Locais públicos e socialmente ativos"],
+      ["Você faz uso de cigarro ou substâncias ilícitas?", "A", "Não faço uso e não gosto de conviver com isso", "Faço uso ocasional ou não me importo com quem usa"],
+      ["Como você lida com responsabilidades domésticas?", "A", "Tenho disciplina e gosto de manter tudo em ordem", "Faço quando necessário, mas não dou muita importância"],
+      ["Como você costuma se alimentar no dia a dia?", "A", "Faço escolhas saudáveis e regulares", "Como o que estiver mais prático ou saboroso"],
+
+      // Relacionamento e Intimidade
+      ["Em um relacionamento, você prefere demonstrar afeto de forma:", "B", "Constante e expressiva", "Moderada e mais reservada"],
+      ["Você acredita que ciúmes em pequenas doses são:", "B", "Sinal de interesse e cuidado", "Insegurança que deve ser evitada"],
+      ["Como você lida com momentos de silêncio ou distanciamento na relação?", "A", "Gosto de conversar e resolver rapidamente", "Prefiro me afastar e pensar antes de falar"],
+      ["Qual sua visão sobre fidelidade em relacionamentos amorosos?", "A", "Essencial e inegociável", "Pode ser flexibilizada com diálogo"],
+      ["Em relação à vida sexual, você é:", "B", "Aberto ao diálogo com limites", "Livre para experimentar sem restrições"],
+
+      // Personalidade e Emoções
+      ["Você se considera mais:", "B", "Introvertido e reflexivo", "Extrovertido e espontâneo"],
+      ["Como você costuma reagir em situações de estresse?", "A", "Procuro manter a calma e analisar", "Reajo com intensidade, mesmo que me arrependa"],
+      ["Quando está triste ou com problemas, você tende a:", "B", "Ficar sozinho e processar", "Procurar alguém para conversar"],
+      ["Você toma decisões mais baseadas em:", "A", "Lógica e análise racional", "Intuição e sentimentos"],
+      ["Como você lida com críticas pessoais?", "A", "Analiso com frieza, mesmo que doa", "Levo para o lado emocional"],
+
+      // Projeto de Vida e Ambições
+      ["Você tem objetivos de longo prazo claramente definidos?", "A", "Sim, com metas concretas", "Não, prefiro viver o presente"],
+      ["Como você encara a relação entre trabalho e vida pessoal?", "B", "Trabalho é prioridade, mesmo que sacrifique conforto", "Prefiro equilíbrio, mesmo que ganhe menos"],
+      ["Você se considera mais movido por:", "B", "Realização e conquistas pessoais", "Estabilidade e segurança"],
+      ["Você está disposto(a) a mudar de cidade ou país por um objetivo importante?", "A", "Sim, se for necessário", "Não, valorizo manter raízes"],
+      ["Você costuma transformar ideias em ações com facilidade?", "A", "Sou proativo e executo com disciplina", "Tenho ideias, mas dificuldades para agir"],
+
+      // Visão Política e Social
+      ["Qual a principal função de um governo moderno?", "A", "Promover justiça social e bem-estar coletivo", "Garantir liberdade individual e segurança jurídica"],
+      ["Você acredita que o progresso social depende mais de:", "B", "Políticas públicas bem estruturadas", "Iniciativa privada e responsabilidade individual"],
+      ["Como você vê a relação entre tradição e mudança social?", "B", "É necessário romper com tradições para avançar", "Mudanças devem respeitar valores culturais históricos"],
+      ["Sobre a atuação de movimentos sociais organizados, você:", "B", "Vê como essenciais para ampliar direitos", "Vê com ceticismo, por vezes como ideologizados"],
+      ["Sobre temas polêmicos e minorias, você tende a:", "A", "Defender políticas inclusivas e progressistas", "Acreditar que o Estado não deve interferir"],
+
+      // Projeto Familiar
+      ["Você deseja ter filhos no futuro?", "A", "Sim, é parte essencial da minha visão de vida", "Não tenho esse desejo ou estou em dúvida"],
+      ["Qual é sua visão sobre casamento?", "A", "É uma instituição relevante para construir vínculos", "É uma convenção que não define a relação"],
+      ["Como você imagina sua convivência com a família do parceiro(a)?", "A", "Próxima e integrada à rotina", "Com certa distância e limites claros"],
+      ["Você se vê dividindo as tarefas domésticas e responsabilidades do lar com igualdade?", "A", "Sim, vejo como uma parceria equilibrada", "Cada um contribui como quiser"],
+      ["Você gostaria de um estilo de vida familiar mais:", "A", "Estável, com rotinas definidas", "Flexível, aberto a mudanças e incertezas"]
+    ];
+
+    const pesos = {
+      0: 3, 5: 2, 10: 3, 15: 2, 20: 2, 25: 1, 30: 1
+    };
+
+    const perguntasDiv = document.getElementById("perguntas");
+    perguntas.forEach(([texto, , altA, altB], i) => {
+      const div = document.createElement("div");
+      div.className = "pergunta";
+      div.innerHTML = `
+        <label>${texto}</label><br>
+        <label><input type="radio" name="q${i}" value="A" required /> A) ${altA}</label><br>
+        <label><input type="radio" name="q${i}" value="B" /> B) ${altB}</label>
+      `;
+      perguntasDiv.appendChild(div);
+    });
+
     document.getElementById("formulario").addEventListener("submit", function (e) {
       e.preventDefault();
-      let acertos = 0;
-      const respostas = {
-        q1: "A",
-        q2: "B",
-        q3: "B",
-        q4: "A",
-        q5: "A"
-        // Adicione os demais conforme necessário
-      };
+      const formData = new FormData(e.target);
+      let total = 0;
+      let pesoTotal = 0;
 
-      for (const [key, ideal] of Object.entries(respostas)) {
-        const resposta = document.querySelector(`input[name="${key}"]:checked`);
-        if (resposta && resposta.value === ideal) {
-          acertos++;
-        }
-      }
+      perguntas.forEach(([_, ideal], i) => {
+        const resposta = formData.get(`q${i}`);
+        const pesoEixo = Object.entries(pesos).reverse().find(([idx]) => i >= idx)[1];
+        const perguntasNoEixo = 5;
+        const valor = resposta === ideal ? (pesoEixo / perguntasNoEixo) : 0;
+        total += valor;
+        pesoTotal += pesoEixo / perguntasNoEixo;
+      });
 
-      const total = Object.keys(respostas).length;
-      const porcentagem = (acertos / total) * 100;
-
+      const porcentagem = (total / pesoTotal) * 100;
       let classificacao = "";
       if (porcentagem >= 80) classificacao = "💘 Relacionamento sério";
       else if (porcentagem >= 50) classificacao = "🤝 Ficante premium";
@@ -80,3 +117,9 @@
   </script>
 </body>
 </html>
+
+     
+ 
+
+      
+      
