@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulário de Compatibilidade Amorosa</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    .pergunta { margin-bottom: 20px; }
+    .resultado { margin-top: 30px; font-size: 1.3em; font-weight: bold; text-align: center; }
+    button { padding: 10px 20px; font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h1>Formulário de Compatibilidade Amorosa</h1>
+  <form id="formulario">
+    <div class="pergunta">
+      <label>O que deve prevalecer em um relacionamento duradouro?</label><br>
+      <label><input type="radio" name="q1" value="A" required /> A) Lealdade incondicional</label><br>
+      <label><input type="radio" name="q1" value="B" /> B) Liberdade individual</label>
+    </div>
+    <div class="pergunta">
+      <label>Você acredita que os fins justificam os meios?</label><br>
+      <label><input type="radio" name="q2" value="A" required /> A) Sim, em algumas situações extremas</label><br>
+      <label><input type="radio" name="q2" value="B" /> B) Não, os meios importam tanto quanto os fins</label>
+    </div>
+    <div class="pergunta">
+      <label>É mais importante proteger os sentimentos ou ser honesto a qualquer custo?</label><br>
+      <label><input type="radio" name="q3" value="A" required /> A) Proteger os sentimentos</label><br>
+      <label><input type="radio" name="q3" value="B" /> B) Ser honesto, mesmo que doa</label>
+    </div>
+    <div class="pergunta">
+      <label>Você se considera mais orientado por princípios ou por empatia?</label><br>
+      <label><input type="radio" name="q4" value="A" required /> A) Princípios</label><br>
+      <label><input type="radio" name="q4" value="B" /> B) Empatia</label>
+    </div>
+    <div class="pergunta">
+      <label>Em situações de conflito, você tende a:</label><br>
+      <label><input type="radio" name="q5" value="A" required /> A) Buscar reconciliação, mesmo que tenha que ceder</label><br>
+      <label><input type="radio" name="q5" value="B" /> B) Defender seu ponto, mesmo que isso desgaste a relação</label>
+    </div>
+    <!-- Continue o restante das perguntas seguindo este mesmo padrão -->
+    <button type="submit">Enviar</button>
+  </form>
+  <div class="resultado" id="resultado"></div>
+  <script>
+    document.getElementById("formulario").addEventListener("submit", function (e) {
+      e.preventDefault();
+      let acertos = 0;
+      const respostas = {
+        q1: "A",
+        q2: "B",
+        q3: "B",
+        q4: "A",
+        q5: "A"
+        // Adicione os demais conforme necessário
+      };
+
+      for (const [key, ideal] of Object.entries(respostas)) {
+        const resposta = document.querySelector(`input[name="${key}"]:checked`);
+        if (resposta && resposta.value === ideal) {
+          acertos++;
+        }
+      }
+
+      const total = Object.keys(respostas).length;
+      const porcentagem = (acertos / total) * 100;
+
+      let classificacao = "";
+      if (porcentagem >= 80) classificacao = "💘 Relacionamento sério";
+      else if (porcentagem >= 50) classificacao = "🤝 Ficante premium";
+      else classificacao = "🔥 Ficante";
+
+      document.getElementById("resultado").innerHTML = `
+        Compatibilidade: ${porcentagem.toFixed(2)}%<br>
+        Classificação: ${classificacao}
+      `;
+    });
+  </script>
+</body>
+</html>
